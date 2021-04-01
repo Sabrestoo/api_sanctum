@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -30,12 +29,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return mixed
      */
     public function show(Product $product)
     {
-        //
+        return Product::find($product);
     }
 
     /**
@@ -45,19 +44,33 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,Product $product)
     {
-
+        $product = Product::find($product->getKey());
+        $product->update($request->all());
+        return $product;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
     {
-        //
+        Product::destroy($product->getKey());
     }
+    /**
+     * Search for the specified resource from storage.
+     *
+     * @param string $searchTerm
+     * @return \Illuminate\Http\Response
+     */
+    public function search($searchTerm)
+    {
+        return Product::where('name', 'like', '%' . $searchTerm . '%')->get();
+    }
+
 }
+
