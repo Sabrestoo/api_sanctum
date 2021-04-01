@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -15,6 +16,14 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required',
+            'description' => 'required',
+            'price' => 'required'
+        ]);
+
         return Product::create($request->all());
     }
 
